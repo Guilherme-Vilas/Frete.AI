@@ -1,9 +1,11 @@
 'use client'
 
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Truck, BarChart3, Users, History, Menu, X } from 'lucide-react'
 import { useState } from 'react'
+import ThemeToggle from './ThemeToggle'
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
@@ -17,13 +19,13 @@ export default function Navigation() {
   ]
 
   return (
-    <nav className="bg-gradient-blue text-white shadow-2xl sticky top-0 z-50">
+    <nav className="bg-gradient-blue text-white shadow-2xl sticky top-0 z-50 dark:bg-gradient-to-br dark:from-blue-900 dark:to-blue-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="bg-white p-2 rounded-lg group-hover:scale-110 transition-transform">
-              <Truck className="text-blue-700 w-6 h-6" />
+            <div className="bg-white p-2 rounded-lg group-hover:scale-110 transition-transform dark:bg-blue-900">
+              <Truck className="text-blue-700 w-6 h-6 dark:text-blue-200" />
             </div>
             <span className="text-xl font-bold hidden sm:inline">Frete.ai</span>
           </Link>
@@ -39,8 +41,8 @@ export default function Navigation() {
                   href={link.href}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 ${
                     isActive
-                      ? 'bg-white text-blue-700 font-semibold'
-                      : 'hover:bg-blue-600 text-white'
+                      ? 'bg-white text-blue-700 font-semibold dark:bg-blue-900 dark:text-white'
+                      : 'hover:bg-blue-600 text-white dark:hover:bg-blue-800'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -48,11 +50,12 @@ export default function Navigation() {
                 </Link>
               )
             })}
+            <ThemeToggle />
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 hover:bg-blue-600 rounded-lg transition-colors"
+            className="md:hidden p-2 hover:bg-blue-600 rounded-lg transition-colors dark:hover:bg-blue-800"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -71,8 +74,8 @@ export default function Navigation() {
                   href={link.href}
                   className={`flex items-center gap-2 px-4 py-3 rounded-lg transition-all ${
                     isActive
-                      ? 'bg-white text-blue-700 font-semibold'
-                      : 'hover:bg-blue-600'
+                      ? 'bg-white text-blue-700 font-semibold dark:bg-blue-900 dark:text-white'
+                      : 'hover:bg-blue-600 dark:hover:bg-blue-800'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -81,6 +84,7 @@ export default function Navigation() {
                 </Link>
               )
             })}
+            <ThemeToggle />
           </div>
         )}
       </div>
