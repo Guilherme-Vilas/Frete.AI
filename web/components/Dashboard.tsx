@@ -6,14 +6,23 @@ import DispatchCard from './DispatchCard'
 
 export default function Dashboard() {
   // Mock data
-  const stats = [
+  const stats: Array<{ title: string; value: string; icon: typeof Truck; color: 'blue' | 'green' | 'purple' | 'emerald'; change: string }> = [
     { title: 'Despachos Hoje', value: '24', icon: Truck, color: 'blue', change: '+12% vs ontem' },
     { title: 'Taxa de Sucesso', value: '96.8%', icon: CheckCircle, color: 'green', change: '+2.3%' },
     { title: 'Motoristas Ativos', value: '156', icon: Users, color: 'purple', change: '+8 esta semana' },
     { title: 'Frete Processado', value: 'R$ 45.2K', icon: TrendingUp, color: 'emerald', change: '+18% vs semana' },
   ]
 
-  const recentDispatches = [
+  const recentDispatches: Array<{
+    id: string
+    origin: string
+    destination: string
+    driver: string
+    status: 'approved' | 'rejected' | 'pending'
+    value: string
+    timestamp: string
+    margin: string
+  }> = [
     {
       id: 'CARGA-2026-001',
       origin: 'São Paulo, SP',
