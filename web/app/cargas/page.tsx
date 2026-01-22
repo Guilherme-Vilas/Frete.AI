@@ -39,8 +39,9 @@ export default function Cargas() {
     valor: '',
   })
   const [searchTerm, setSearchTerm] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleAddCarga = (e: React.FormEvent) => {
+  const handleAddCarga = async (e: React.FormEvent) => {
     e.preventDefault()
     
     if (!formData.origem || !formData.destino || !formData.peso || !formData.valor) {
@@ -48,18 +49,51 @@ export default function Cargas() {
       return
     }
 
-    const newCarga: Carga = {
-      id: `CARGA-2026-${String(cargas.length + 1).padStart(3, '0')}`,
-      origem: formData.origem,
-      destino: formData.destino,
-      peso: `${formData.peso} kg`,
-      valor: `R$ ${formData.valor}`,
-      status: 'Pendente',
-    }
+    setLoading(true)
+    try {
+      // Chamar API de análise
+      const response = await fetch('http://localhost:8000/cargas/analisar', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          origem: formData.origem,
+          destino: formData.destino,
+          peso: parseFloat(formData.peso),
+          valor: parseFloat(formData.valor),
+          tipo_freta: 'Truck',
+        }),
+      })
 
-    setCargas([...cargas, newCarga])
-    setFormData({ origem: '', destino: '', peso: '', valor: '' })
-    setShowForm(false)
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.statusText}`)
+      }
+
+      const result = await response.json()
+
+      // Criar carga com os dados retornados
+      const newCarga: Carga = {
+        id: result.id,
+        origem: result.origem,
+        destino: result.destino,
+        peso: result.peso,
+        valor: result.valor,
+        status: result.status,
+      }
+
+      setCargas([...cargas, newCarga])
+      setFormData({ origem: '', destino: '', peso: '', valor: '' })
+      setShowForm(false)
+      
+      // Mostrar resultado
+      alert(`✓ Carga analisada!\n\nID: ${result.id}\nStatus: ${result.status}\nMargem: ${result.margem || 'N/A'}`)
+    } catch (error) {
+      console.error('Erro:', error)
+      alert(`✗ Erro ao analisar carga:\n${error instanceof Error ? error.message : 'Erro desconhecido'}`)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleDeleteCarga = (id: string) => {
@@ -141,9 +175,10 @@ export default function Cargas() {
               <div className="flex gap-2">
                 <button 
                   type="submit" 
-                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all"
+                  disabled={loading}
+                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-blue-400 disabled:to-blue-500 text-white font-semibold rounded-lg transition-all disabled:cursor-not-allowed"
                 >
-                  Criar Carga
+                  {loading ? '⏳ Analisando...' : 'Criar Carga'}
                 </button>
                 <button 
                   type="button" 
