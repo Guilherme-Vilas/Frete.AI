@@ -52,7 +52,7 @@ Este projeto implementa um **Engine de Despacho de Cargas de Alta Performance** 
     ┌────────────────────────────────┐
     │  THE TRACKER (Rastreador)      │
     │  ├─ Busca Geo-Espacial <10ms   │
-    │  ├─ Raio de proximidade (km)    │
+    │  ├─ Raio de proximidade (km)   │
     │  ├─ Filtro por tipo de frota   │
     │  └─ Ranking de Eficiência      │
     │     (1/Dist) × SLA × Margem    │
@@ -64,9 +64,9 @@ Este projeto implementa um **Engine de Despacho de Cargas de Alta Performance** 
     ┌────────────────────────────────┐
     │ THE GUARD DOG (Auditor P&L)    │
     │  ├─ Validação de Seguro (GR)   │
-    │  ├─ Exploração de Malha (15%)   │
+    │  ├─ Exploração de Malha (15%)  │
     │  ├─ Cálculo de Margem          │
-    │  ├─ NDCG@k Target Price         │
+    │  ├─ NDCG@k Target Price        │
     │  └─ Bloqueio se inviável       │
     │                                │
     │  Output: Carga aprovada/bloq.  │
